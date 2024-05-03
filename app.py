@@ -2,7 +2,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import math
-import torch
 from tqdm import tqdm
 from transformers import GPT2LMHeadModel, GPT2TokenizerFast
 
@@ -33,20 +32,20 @@ def detect_text():
             target_ids = input_ids.clone()
             target_ids[:, :-trg_len] = -100
                   
-            with torch.no_grad():
-                outputs = model(input_ids, labels=target_ids)
+            outputs = model(input_ids, labels=target_ids)
                 # loss is calculated using CrossEntropyLoss which averages over valid labels
                 # N.B. the model only calculates loss over trg_len - 1 labels, because it internally shifts the labels
                 # to the left by 1.
-                neg_log_likelihood = outputs.loss
+            neg_log_likelihood = outputs.loss
         
             nlls.append(neg_log_likelihood)
             prev_end_loc = end_loc
             if end_loc == seq_len:
                 break
-        ppl = torch.exp(torch.stack(nlls).mean())
-        answer=ppl.item()
-        print(answer)
+        avg_nll = sum(nlls) / len(nlls)
+        # Calculate perplexity as exponentiation of the average negative log likelihood
+        ppl = math.exp(avg_nll)
+        print(ppl)
         # Return the detected text as a JSON response
         return jsonify({"perplexity": answer})
     except Exception as e:
