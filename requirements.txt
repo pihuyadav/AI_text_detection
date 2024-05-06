@@ -2,3 +2,4 @@ Flask==3.0.3
 flask-cors==4.0.0
 tqdm==4.66.2
 transformers==4.39.3
+gunicorn
