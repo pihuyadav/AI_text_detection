@@ -11,6 +11,9 @@ tokenizer = GPT2TokenizerFast.from_pretrained(model_id)
 
 app = Flask(__name__)
 CORS(app)
+@app.route('/')
+def nindex():
+    return 'INDEX'
 @app.route('/detect-text', methods=['POST'])
 def detect_text():
     # Get the text data from the request
