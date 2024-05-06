@@ -5,6 +5,7 @@ import math
 from tqdm import tqdm
 from transformers import GPT2LMHeadModel, GPT2TokenizerFast
 
+print('here')
 model_id = "openai-community/gpt2-large"
 model = GPT2LMHeadModel.from_pretrained(model_id)
 tokenizer = GPT2TokenizerFast.from_pretrained(model_id)
