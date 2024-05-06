@@ -12,7 +12,7 @@ tokenizer = GPT2TokenizerFast.from_pretrained(model_id)
 
 app = Flask(__name__)
 CORS(app)
-@app.route('/')
+@app.route('/node')
 def nindex():
     return 'INDEX'
 @app.route('/detect-text', methods=['POST'])
